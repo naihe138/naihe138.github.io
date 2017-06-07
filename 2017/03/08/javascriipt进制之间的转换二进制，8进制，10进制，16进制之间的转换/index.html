@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="Naice" />
+
+
+
+<meta name="description" content="在公司，碰到生成设备指令的问题？需要做个16、10、2进制之间的转换，再次特意做一个笔记。在这里会详细的介绍一下Javascript中的Number的toString，以及parseInt（）的方法。 在js中数字（Number）的toString方法Number 类型的 toString() 方法比较特殊，它有两种模式，即默认模式和基模式。采用默认模式，toString() 方法只是用相应的字符">
+<meta name="keywords" content="js">
+<meta property="og:type" content="article">
+<meta property="og:title" content="javascriipt进制之间的转换二进制，8进制，10进制，16进制之间的转换">
+<meta property="og:url" content="http://naihe138.github.io/2017/03/08/javascriipt进制之间的转换二进制，8进制，10进制，16进制之间的转换/index.html">
+<meta property="og:site_name" content="naice">
+<meta property="og:description" content="在公司，碰到生成设备指令的问题？需要做个16、10、2进制之间的转换，再次特意做一个笔记。在这里会详细的介绍一下Javascript中的Number的toString，以及parseInt（）的方法。 在js中数字（Number）的toString方法Number 类型的 toString() 方法比较特殊，它有两种模式，即默认模式和基模式。采用默认模式，toString() 方法只是用相应的字符">
+<meta property="og:updated_time" content="2017-03-17T17:09:18.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="javascriipt进制之间的转换二进制，8进制，10进制，16进制之间的转换">
+<meta name="twitter:description" content="在公司，碰到生成设备指令的问题？需要做个16、10、2进制之间的转换，再次特意做一个笔记。在这里会详细的介绍一下Javascript中的Number的toString，以及parseInt（）的方法。 在js中数字（Number）的toString方法Number 类型的 toString() 方法比较特殊，它有两种模式，即默认模式和基模式。采用默认模式，toString() 方法只是用相应的字符">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="naice" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/img/favicon.jpg">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>javascriipt进制之间的转换二进制，8进制，10进制，16进制之间的转换 | naice</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: undefined
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar3.JPG" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">Naice</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">很多事情不是因为有希望才去坚持，而是坚持了才有希望。</p>
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/随笔/">随笔</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="http://naihe138.github.io/aboutMe/index.html">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=CTo_OTs4PDs6OUl4eCdqZmQ" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/naihe138" title="GitHub"></a>
+                            
+                                <a class="fa SegmentFault" href="https://segmentfault.com/u/naice" title="SegmentFault"></a>
+                            
+                                <a class="fa CSDN" href="http://blog.csdn.net/naihejiang" title="CSDN"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ajax/">ajax</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css3/">css3</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/">gulp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html5/">html5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jq/">jq</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/">js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/koa2/">koa2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac/">mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/moongose/">moongose</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react/">react</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redux/">redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue-cli/">vue-cli</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue2-0/">vue2.0</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/适配/">适配</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于前端</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">Naice</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar3.JPG" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">Naice</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">很多事情不是因为有希望才去坚持，而是坚持了才有希望。</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/随笔/">随笔</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="http://naihe138.github.io/aboutMe/index.html">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=CTo_OTs4PDs6OUl4eCdqZmQ" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/naihe138" title="GitHub"></a>
+                            
+                                <a class="fa SegmentFault" target="_blank" href="https://segmentfault.com/u/naice" title="SegmentFault"></a>
+                            
+                                <a class="fa CSDN" target="_blank" href="http://blog.csdn.net/naihejiang" title="CSDN"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-javascriipt进制之间的转换二进制，8进制，10进制，16进制之间的转换" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/03/08/javascriipt进制之间的转换二进制，8进制，10进制，16进制之间的转换/" class="article-date">
+      <time datetime="2017-03-08T09:17:49.000Z" itemprop="datePublished">2017-03-08</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      javascriipt进制之间的转换二进制，8进制，10进制，16进制之间的转换
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>在公司，碰到生成设备指令的问题？需要做个16、10、2进制之间的转换，再次特意做一个笔记。在这里会详细的介绍一下Javascript中的<code>Number的toString</code>，以及<code>parseInt（）</code>的方法。</p>
+<h3 id="在js中数字（Number）的toString方法"><a href="#在js中数字（Number）的toString方法" class="headerlink" title="在js中数字（Number）的toString方法"></a>在js中数字（Number）的toString方法</h3><p>Number 类型的 toString() 方法比较特殊，它有两种模式，即默认模式和基模式。采用默认模式，toString() 方法只是用相应的字符串输出数字值（无论是整数、浮点数还是科学计数法），如下所示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">var iNum1 = 10;</div><div class="line">var iNum2 = 10.0;</div><div class="line">alert(iNum1.toString());	//输出 &quot;10&quot;</div><div class="line">alert(iNum2.toString());	//输出 &quot;10&quot;</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>注释：在默认模式中，无论最初采用什么表示法声明数字，Number 类型的 toString() 方法返回的都是数字的十进制表示。因此，以八进制或十六进制字面量形式声明的数字输出的都是十进制形式的。<br><a id="more"></a><br>采用 Number 类型的 toString() 方法的基模式，可以用不同的基输出数字，例如二进制的基是 2，八进制的基是 8，十六进制的基是 16。基只是要转换成的基数的另一种加法而已，它是 toString() 方法的参数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">var iNum = 10;</div><div class="line">alert(iNum.toString(2));	//输出 &quot;1010&quot; //10进制转2进制</div><div class="line">alert(iNum.toString(8));	//输出 &quot;12&quot; //10进制转8进制</div><div class="line">alert(iNum.toString(16));	//输出 &quot;A&quot; //10进制转进16制</div></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="转换成数字"><a href="#转换成数字" class="headerlink" title="转换成数字"></a>转换成数字</h3><p>ECMAScript 提供了两种把非数字的原始值转换成数字的方法，即 parseInt() 和 parseFloat()。<br>前者把值转换成整数，后者把值转换成浮点数。只有对 String 类型调用这些方法，它们才能正确运行；对其他类型返回的都是 NaN。</p>
+<blockquote>
+<ol>
+<li>parseInt() 方法首先查看位置 0 处的字符，判断它是否是个有效数字；如果不是，该方法将返回 NaN，不再继续执行其他操作。但如果该字符是有效数字，该方法将查看位置 1 处的字符，进行同样的测试。这一过程将持续到发现非有效数字的字符为止，此时 parseInt() 将把该字符之前的字符串转换成数字。</li>
+<li>例如，如果要把字符串 “12345red” 转换成整数，那么 parseInt() 将返回 12345，因为当它检查到字符 r 时，就会停止检测过程。</li>
+<li>字符串中包含的数字字面量会被正确转换为数字，比如 “0xA” 会被正确转换为数字 10。不过，字符串 “22.5” 将被转换成 22，因为对于整数来说，小数点是无效字符。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">var iNum1 = parseInt(&quot;12345red&quot;);	//返回 12345</div><div class="line">var iNum1 = parseInt(&quot;0xA&quot;);	//返回 10</div><div class="line">var iNum1 = parseInt(&quot;56.9&quot;);	//返回 56</div><div class="line">var iNum1 = parseInt(&quot;red&quot;);	//返回 NaN</div><div class="line"></div><div class="line">var iNum1 = parseInt(&quot;AF&quot;, 16);	//返回 175 // 转成16进制</div><div class="line">var iNum1 = parseInt(&quot;10&quot;, 2);	//返回 2  // 转成2进制</div><div class="line">var iNum2 = parseInt(&quot;10&quot;, 8);	//返回 8 // 转成8进制</div><div class="line">var iNum3 = parseInt(&quot;10&quot;, 10);	//返回 10 // 转成10进制</div></pre></td></tr></table></figure>
+</li>
+</ol>
+</blockquote>
+<p>如果十进制数包含前导 0，那么最好采用基数 10，这样才不会意外地得到八进制的值。例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">var iNum1 = parseInt(&quot;010&quot;);	//返回 8</div><div class="line">var iNum2 = parseInt(&quot;010&quot;, 8);	//返回 8</div><div class="line">var iNum3 = parseInt(&quot;010&quot;, 10);	//返回 10</div></pre></td></tr></table></figure></p>
+<h3 id="最后的经验"><a href="#最后的经验" class="headerlink" title="最后的经验"></a>最后的经验</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">//十进制转其他</div><div class="line">var data=110;</div><div class="line">alert(data);</div><div class="line">alert(data.toString(8));</div><div class="line">alert(data.toString(32));</div><div class="line">alert(data.toString(16));</div><div class="line">//其他转十进制</div><div class="line">var data=&apos;110&apos;;</div><div class="line">alert(parseInt(data,2));</div><div class="line">alert(parseInt(data,8));</div><div class="line">alert(parseInt(data,16));</div><div class="line">//其他转其他</div><div class="line">//先用parseInt转成十进制再用toString转到目标进制</div><div class="line">alert(String.fromCharCode(parseInt(141,8)))</div><div class="line">alert(parseInt(&apos;ff&apos;,16).toString(2));</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/03/08/javascriipt进制之间的转换二进制，8进制，10进制，16进制之间的转换/">javascriipt进制之间的转换二进制，8进制，10进制，16进制之间的转换</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">Naice</a></p>
+        <p><span>发布时间:</span>2017-03-08, 17:17:49</p>
+        <p><span>最后更新:</span>2017-03-18, 01:09:18</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/03/08/javascriipt进制之间的转换二进制，8进制，10进制，16进制之间的转换/" title="javascriipt进制之间的转换二进制，8进制，10进制，16进制之间的转换">http://naihe138.github.io/2017/03/08/javascriipt进制之间的转换二进制，8进制，10进制，16进制之间的转换/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://naihe138.github.io/2017/03/08/javascriipt进制之间的转换二进制，8进制，10进制，16进制之间的转换/　　作者: Naice" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2017/03/10/基于vue2.0Cli搭建的自定义，多模块打包框架/">
+                    基于vue2.0Cli搭建的自定义，多模块打包框架
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/03/02/css用-media适配不同尺寸的手机布局方式/">
+                    css用@media适配不同尺寸的手机布局方式
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#在js中数字（Number）的toString方法"><span class="toc-number">1.</span> <span class="toc-text">在js中数字（Number）的toString方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#转换成数字"><span class="toc-number">2.</span> <span class="toc-text">转换成数字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#最后的经验"><span class="toc-number">3.</span> <span class="toc-text">最后的经验</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"javascriipt进制之间的转换二进制，8进制，10进制，16进制之间的转换　| naice　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <div id="comment-box" ></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2017/03/08/javascriipt进制之间的转换二进制，8进制，10进制，16进制之间的转换/" data-title="javascriipt进制之间的转换二进制，8进制，10进制，16进制之间的转换" data-url="http://naihe138.github.io/2017/03/08/javascriipt进制之间的转换二进制，8进制，10进制，16进制之间的转换/"></div>
+    <script>
+        var duoshuoQuery = {short_name:"naihe138"};
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            // s.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+            s.src = 'https://naihe138.github.io/js/embed.js';
+            s.async = true; s.charset = 'UTF-8';
+            (d.head || d.body).appendChild(s);
+        }
+
+        
+    </script>
+    
+    <script> loadComment(); </script>
+
+</div>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/03/10/基于vue2.0Cli搭建的自定义，多模块打包框架/" title="上一篇: 基于vue2.0Cli搭建的自定义，多模块打包框架">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/03/02/css用-media适配不同尺寸的手机布局方式/" title="下一篇: css用@media适配不同尺寸的手机布局方式">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/06/07/react、react-router、redux-也许是最佳小实践2/">react、react-router、redux 也许是最佳小实践2</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/06/react、react-router、redux-也许是最佳小实践/">react、react-router、redux 也许是最佳小实践1</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/26/vue2-0图片查看器/">vue2.0图片查看器</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/26/浅谈ajax原理过程以及实现/">浅谈ajax原理过程以及实现</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/16/基于react-bootstrap-koa2开发的“微说说”/">基于react+bootstrap+koa2开发的“微说说”</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/10/基于vue2.0Cli搭建的自定义，多模块打包框架/">基于vue2.0Cli搭建的自定义，多模块打包框架</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/08/javascriipt进制之间的转换二进制，8进制，10进制，16进制之间的转换/">javascriipt进制之间的转换二进制，8进制，10进制，16进制之间的转换</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/02/css用-media适配不同尺寸的手机布局方式/">css用@media适配不同尺寸的手机布局方式</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/08/js-地址的封装以及地址栏的参数获取/">js 地址的封装以及地址栏的参数获取</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/05/Linux命收集/">Linux命收集</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/29/vue自定义事件/">vue自定义事件</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/16/深入理解js执行的细节/">深入理解js执行的细节</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/15/JQ插件写（js大同小异）/">JQ插件写（其实js插件也一样）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/14/html5触摸时间tap演化/">html5触摸事件tap演化</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/09/显示隐藏mac文件操作/">显示隐藏mac文件操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/27/node跨域请求/">Node处理http跨域请求</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/27/关于JS堆栈与拷贝/">关于JS堆栈与拷贝</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/26/node-版本升级/">node 版本升级 操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/20/JQ常用方法/">JQ常用方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/17/一些前端的笔记/">一些前端的笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/16/hello-world/">发布hexo</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/15/强制退出Mac程序/">强制退出Mac程序</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/15/markdown教程/">markdown教程</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/13/gulp入门到上树/">gulp从入门到上树</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/12/夜深人静/">夜深，人静</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/10/在css中为table-后表格单元格边界异常的解决办法/">在css中为table 后表格单元格边界异常的解决办法</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/09/mongoose中通过-id查询的方法/">mongoose中通过-id查询的方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/02/mongodb启动不了：child process failed, exited with error number 100/">mongodb启动不了：child process failed, exited with error number 100</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/22/love/">试着学习markdown</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/17/mogodb启动方法(window)/">mongodb启动方法(window)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/20/js简单的事件监听器/">JS实现一个简单的事件监听器(订阅发布)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/20/获取时间戳的方法/">获取时间戳的方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/10/JS实现获取本周、本月、本季度、半年的时间/">JS实现获取本周、本月、本季度、半年的时间</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/10/01/移动端的一些常用css的设置 .(2)/">移动端的一些常用css的设置</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2017 Naice
+            </div>
+            <!--<div class="footer-right">-->
+                <!--<a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>-->
+                <!--Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a>-->
+                <!--by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>-->
+            <!--</div>-->
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

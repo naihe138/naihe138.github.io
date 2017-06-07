@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="Naice" />
+
+
+
+<meta name="description" content="最近某人正在学JQ,于是乎就命令我写一个JQ常用的方法,没办法命令她的命令必须要执行,就收集整理了一大份可能有很多不齐全,但足以应付很多场景了~对某人说~么么么哒 JQuery Selectors 方法说明 基本选择器   $(”#myDiv”) 匹配唯一的具有此id值的元素 $(”div”) 匹配指定名称的所有元素 $(”.myClass”) 匹配具有此class样式值的所有元素 $(”*”)">
+<meta name="keywords" content="jq,js">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JQ常用方法">
+<meta property="og:url" content="http://naihe138.github.io/2016/10/20/JQ常用方法/index.html">
+<meta property="og:site_name" content="naice">
+<meta property="og:description" content="最近某人正在学JQ,于是乎就命令我写一个JQ常用的方法,没办法命令她的命令必须要执行,就收集整理了一大份可能有很多不齐全,但足以应付很多场景了~对某人说~么么么哒 JQuery Selectors 方法说明 基本选择器   $(”#myDiv”) 匹配唯一的具有此id值的元素 $(”div”) 匹配指定名称的所有元素 $(”.myClass”) 匹配具有此class样式值的所有元素 $(”*”)">
+<meta property="og:updated_time" content="2017-04-27T01:58:03.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JQ常用方法">
+<meta name="twitter:description" content="最近某人正在学JQ,于是乎就命令我写一个JQ常用的方法,没办法命令她的命令必须要执行,就收集整理了一大份可能有很多不齐全,但足以应付很多场景了~对某人说~么么么哒 JQuery Selectors 方法说明 基本选择器   $(”#myDiv”) 匹配唯一的具有此id值的元素 $(”div”) 匹配指定名称的所有元素 $(”.myClass”) 匹配具有此class样式值的所有元素 $(”*”)">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="naice" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/img/favicon.jpg">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>JQ常用方法 | naice</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: undefined
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar3.JPG" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">Naice</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">很多事情不是因为有希望才去坚持，而是坚持了才有希望。</p>
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/随笔/">随笔</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="http://naihe138.github.io/aboutMe/index.html">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=CTo_OTs4PDs6OUl4eCdqZmQ" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/naihe138" title="GitHub"></a>
+                            
+                                <a class="fa SegmentFault" href="https://segmentfault.com/u/naice" title="SegmentFault"></a>
+                            
+                                <a class="fa CSDN" href="http://blog.csdn.net/naihejiang" title="CSDN"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ajax/">ajax</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css3/">css3</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/">gulp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html5/">html5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jq/">jq</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/">js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/koa2/">koa2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac/">mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/moongose/">moongose</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react/">react</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redux/">redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue-cli/">vue-cli</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue2-0/">vue2.0</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/适配/">适配</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于前端</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">Naice</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar3.JPG" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">Naice</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">很多事情不是因为有希望才去坚持，而是坚持了才有希望。</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/随笔/">随笔</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="http://naihe138.github.io/aboutMe/index.html">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=CTo_OTs4PDs6OUl4eCdqZmQ" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/naihe138" title="GitHub"></a>
+                            
+                                <a class="fa SegmentFault" target="_blank" href="https://segmentfault.com/u/naice" title="SegmentFault"></a>
+                            
+                                <a class="fa CSDN" target="_blank" href="http://blog.csdn.net/naihejiang" title="CSDN"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-JQ常用方法" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/10/20/JQ常用方法/" class="article-date">
+      <time datetime="2016-10-20T05:37:53.000Z" itemprop="datePublished">2016-10-20</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      JQ常用方法
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jq/">jq</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>最近某人正在学JQ,于是乎就命令我写一个JQ常用的方法,没办法命令她的命令必须要执行,就收集整理了一大份<br>可能有很多不齐全,但足以应付很多场景了<del>~对某人说</del>~么么么哒</p>
+<h3 id="JQuery-Selectors-方法说明"><a href="#JQuery-Selectors-方法说明" class="headerlink" title="JQuery Selectors 方法说明"></a>JQuery Selectors 方法说明</h3><blockquote>
+<p>基本选择器</p>
+</blockquote>
+<ul>
+<li>$(”#myDiv”) 匹配唯一的具有此id值的元素</li>
+<li>$(”div”) 匹配指定名称的所有元素</li>
+<li>$(”.myClass”) 匹配具有此class样式值的所有元素</li>
+<li>$(”*”) 匹配所有元素</li>
+<li>$(”div,span,p.myClass”) 联合所有匹配的选择器</li>
+</ul>
+<a id="more"></a>
+<blockquote>
+<p>层叠选择器</p>
+</blockquote>
+<ul>
+<li>$(”form input”) 后代选择器，选择ancestor的所有子孙节点</li>
+<li>$(”#main &gt; *”) 子选择器，选择parent的所有子节点</li>
+<li>$(”label + input”) 临选择器，选择prev的下一个临节点</li>
+<li><p>$(”#prev ~ div”) 同胞选择器，选择prev的所有同胞节点</p>
+<blockquote>
+<p>基本过滤选择器</p>
+</blockquote>
+</li>
+<li><p>$(”tr:first”) 匹配第一个选择的元素</p>
+</li>
+<li>$(”tr:last”) 匹配最后一个选择的元素</li>
+<li>$(”input:not(:checked) + span”)从原元素集合中过滤掉匹配selector的所有元素（这里有是一个临选择器）</li>
+<li>$(”tr:even”) 匹配集合中偶数位置的所有元素(从0开始)</li>
+<li>$(”tr:odd”) 匹配集合中奇数位置的所有元素(从0开始)</li>
+<li>$(”td:eq(2)”) 匹配集合中指定位置的元素(从0开始)</li>
+<li>$(”td:gt(4)”) 匹配集合中指定位置之后的所有元素(从0开始)</li>
+<li>$(”td:gl(4)”) 匹配集合中指定位置之前的所有元素(从0开始)</li>
+<li>$(”:header”) 匹配所有标题</li>
+<li><p>$(”div:animated”) 匹配所有正在运行动画的所有元素</p>
+<blockquote>
+<p>内容过滤选择器</p>
+</blockquote>
+</li>
+<li><p>$(”div:contains(’John’)”) 匹配含有指定文本的所有元素</p>
+</li>
+<li>$(”td:empty”) 匹配所有空元素(只含有文本的元素不算空元素)</li>
+<li>$(”div:has(p)”) 从原元素集合中再次匹配所有至少含有一个selector的所有元素</li>
+<li>$(”td:parent”) 匹配所有不为空的元素(含有文本的元素也算)</li>
+<li>$(”div:hidden”) 匹配所有隐藏的元素，也包括表单的隐藏域</li>
+<li><p>$(”div:visible”) 匹配所有可见的元素</p>
+<blockquote>
+<p>属性过滤选择器</p>
+</blockquote>
+</li>
+<li><p>$(”div[id]”) 匹配所有具有指定属性的元素</p>
+</li>
+<li>$(”input[name=’newsletter’]”) 匹配所有具有指定属性值的元素</li>
+<li>$(”input[name!=’newsletter’]”) 匹配所有不具有指定属性值的元素</li>
+<li>$(”input[name^=’news’]”) 匹配所有指定属性值以value开头的元素</li>
+<li>$(”input[name$=’letter’]”) 匹配所有指定属性值以value结尾的元素</li>
+<li>$(”input[name*=’man’]”) 匹配所有指定属性值含有value字符的元素</li>
+<li>$(”input[id][name$=’man’]”) 匹配同时符合多个选择器的所有元素</li>
+</ul>
+<blockquote>
+<p>子元素过滤选择器</p>
+</blockquote>
+<ul>
+<li>$(”ul li:nth-child(2)”),</li>
+<li>$(”ul li:nth-child(odd)”), 匹配父元素的第n个子元素</li>
+<li>$(”ul li:nth-child(3n + 1)”)</li>
+<li>$(”div span:first-child”) 匹配父元素的第1个子元素</li>
+<li>$(”div span:last-child”) 匹配父元素的最后1个子元素</li>
+<li><p>$(”div button:only-child”) 匹配父元素的唯一1个子元素</p>
+<blockquote>
+<p>表单元素选择器</p>
+</blockquote>
+</li>
+<li><p>$(”:input”) 匹配所有的表单输入元素，包括所有类型的input, textarea, select 和 button</p>
+</li>
+<li>$(”:text”) 匹配所有类型为text的input元素</li>
+<li>$(”:password”) 匹配所有类型为password的input元素</li>
+<li>$(”:radio”) 匹配所有类型为radio的input元素</li>
+<li>$(”:checkbox”) 匹配所有类型为checkbox的input元素</li>
+<li>$(”:submit”) 匹配所有类型为submit的input元素</li>
+<li>$(”:image”) 匹配所有类型为image的input元素</li>
+<li>$(”:reset”) 匹配所有类型为reset的input元素</li>
+<li>$(”:button”) 匹配所有类型为button的input元素</li>
+<li>$(”:file”) 匹配所有类型为file的input元素</li>
+<li><p>$(”:hidden”) 匹配所有类型为hidden的input元素或表单的隐藏域</p>
+<blockquote>
+<p>表单元素过滤选择器</p>
+</blockquote>
+</li>
+<li><p>$(”:enabled”) 匹配所有可操作的表单元素</p>
+</li>
+<li>$(”:disabled”) 匹配所有不可操作的表单元素</li>
+<li>$(”:checked”) 匹配所有已点选的元素</li>
+<li>$(”select option:selected”) 匹配所有已选择的元素</li>
+</ul>
+<h3 id="JQuery-CSS-方法说明"><a href="#JQuery-CSS-方法说明" class="headerlink" title="JQuery CSS 方法说明"></a>JQuery CSS 方法说明</h3><ul>
+<li>css( name ) 访问第一个匹配元素的样式属性。</li>
+<li>css( name, value ) 在所有匹配的元素中，设置一个样式属性的值。</li>
+<li><p>offset( ) 取得匹配的第一个元素相对于当前可视窗口的位置。返回的对象有2个属性，top和left，属性值为整数。这个函数只能用于可见元素。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">var p = $(”p:last”);</div><div class="line">var offset = p.offset();</div><div class="line">p.html( “left: ” + offset.left + “, top: ” + offset.top );</div></pre></td></tr></table></figure>
+</li>
+<li><p>width( ) 取得当前第一匹配的元素的宽度值，</p>
+</li>
+<li>width( val ) 为每个匹配的元素设置指定的宽度值。</li>
+<li>height( ) 取得当前第一匹配的元素的高度值，</li>
+<li>height( val ) 为每个匹配的元素设置指定的高度值。</li>
+</ul>
+<h3 id="jQuery-事件"><a href="#jQuery-事件" class="headerlink" title="jQuery 事件:"></a>jQuery 事件:</h3><ul>
+<li>ready(fn); $(document).ready()<br>注意在body中没有onload事件，否则该函数不能执行。在每个页面中可以<br>有很多个函数被加载执行，按照fn的顺序来执行。</li>
+<li>bind( type, [data], fn ) 为每一个匹配元素的特定事件（像click）绑定一个或多个事件处理器函数。可能的事件属性有：blur, focus, load, resize, scroll, unload, click, dblclick, mousedown, mouseup, mousemove,<br> mouseover, mouseout, mouseenter, mouseleave, change, select, submit, keydown, keypress,<br>  keyup, error</li>
+<li><p>one( type, [data], fn ) 为每一个匹配元素的特定事件（像click）绑定一个或多个事件处理器函数。在每个对<br>象上，这个事件处理函数只会被执行一次。其他规则与bind()函数相同。</p>
+</li>
+<li><p>trigger( type, [data] ) 在每一个匹配的元素上触发某类事件。</p>
+</li>
+<li>triggerHandler( type, [data] ) 这一特定方法会触发一个元素上特定的事件(指定一个事件类型)，同时取消浏览器对此事件的默认行动</li>
+<li>unbind( [type], [data] ) 反绑定，从每一个匹配的元素中删除绑定的事件。</li>
+<li>$(”p”).unbind() 移除所有段落上的所有绑定的事件</li>
+<li>$(”p”).unbind( “click” ) 移除所有段落上的click事件</li>
+<li><p>hover( over, out ) over,out都是方法, 当鼠标移动到一个匹配的元素上面时，会触发指定的第一个函数。当鼠标移出这个元素时，会触发指定的第二个函数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$(”p”).hover(function()&#123;</div><div class="line">    $(this).addClass(”over”);</div><div class="line">&#125;,</div><div class="line">function()&#123;</div><div class="line">    $(this).addClass(”out”);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</li>
+<li><p>toggle( fn, fn ) 如果点击了一个匹配的元素，则触发指定的第一个函数，当再次点击同一元素时，则触发指定的第二个函数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$(”p”).toggle(function()&#123;</div><div class="line">    $(this).addClass(”selected”);</div><div class="line">&#125;,</div><div class="line">function()&#123;</div><div class="line">    $(this).removeClass(”selected”);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="元素事件列表说明"><a href="#元素事件列表说明" class="headerlink" title="元素事件列表说明"></a>元素事件列表说明</h3><blockquote>
+<p>注：不带参数的函数，其参数为可选的 fn。jQuery不支持form元素的reset事件。<br>事件 描述 支持元素或对象</p>
+</blockquote>
+<ul>
+<li>blur( ) 元素失去焦点 a, input, textarea, button, select, label, map, area</li>
+<li>change( ) 用户改变域的内容 input, textarea, select</li>
+<li>click( ) 鼠标点击某个对象 几乎所有元素</li>
+<li>dblclick( ) 鼠标双击某个对象 几乎所有元素</li>
+<li>error( ) 当加载文档或图像时发生某个错误 window, img</li>
+<li>focus( ) 元素获得焦点 a, input, textarea, button, select, label, map, area</li>
+<li>keydown( ) 某个键盘的键被按下 几乎所有元素</li>
+<li>keypress( ) 某个键盘的键被按下或按住 几乎所有元素</li>
+<li>keyup( ) 某个键盘的键被松开 几乎所有元素</li>
+<li>load( fn ) 某个页面或图像被完成加载 window, img</li>
+<li>mousedown( fn ) 某个鼠标按键被按下 几乎所有元素</li>
+<li>mousemove( fn ) 鼠标被移动 几乎所有元素</li>
+<li>mouseout( fn ) 鼠标从某元素移开 几乎所有元素</li>
+<li>mouseover( fn ) 鼠标被移到某元素之上 几乎所有元素</li>
+<li>mouseup( fn ) 某个鼠标按键被松开 几乎所有元素</li>
+<li>resize( fn ) 窗口或框架被调整尺寸 window, iframe, frame</li>
+<li>scroll( fn ) 滚动文档的可视部分时 window</li>
+<li>select( ) 文本被选定 document, input, textarea</li>
+<li>submit( ) 提交按钮被点击 form</li>
+<li>unload( fn ) 用户退出页面 window</li>
+</ul>
+<h3 id="JQuery-Effects-方法说明"><a href="#JQuery-Effects-方法说明" class="headerlink" title="JQuery Effects 方法说明"></a>JQuery Effects 方法说明</h3><ul>
+<li>show( ) 显示隐藏的匹配元素。</li>
+<li>show( speed, [callback] ) 以优雅的动画显示所有匹配的元素，并在显示完成后可选地触发一个回调函数。</li>
+<li>hide( ) 隐藏所有的匹配元素。</li>
+<li>hide( speed, [callback] ) 以优雅的动画隐藏所有匹配的元素，并在显示完成后可选地触发一个回调函数</li>
+<li>toggle( ) 切换元素的可见状态。如果元素是可见的，切换为隐藏的；如果元素是隐藏的，切换为可见的。</li>
+<li>slideDown( speed, [callback] ) 通过高度变化（向下增大）来动态地显示所有匹配的元素，在显示完成后可选地触发一个回调函数。这个动画效果只调整元素的高度，可以使匹配的元素以“滑动”的方式显示出来。</li>
+<li>slideUp( speed, [callback] ) 通过高度变化（向上减小）来动态地隐藏所有匹配的元素，在隐藏完成后可选地触发一个回调函数。这个动画效果只调整元素的高度，可以使匹配的元素以”滑动”的方式隐藏起来。</li>
+<li>slideToggle( speed, [callback] ) 通过高度变化来切换所有匹配元素的可见性，并在切换完成后可选地触发一个回调函数。 这个动画效果只调整元素的高度，可以使匹配的元素以”滑动”的方式隐藏或显示。</li>
+<li>fadeIn( speed, [callback] ) 通过不透明度的变化来实现所有匹配元素的淡入效果，并在动画完成后可选地触发一个回调函数。 这个动画只调整元素的不透明度，也就是说所有匹配的元素的高度和宽度不会发生变化。</li>
+<li>fadeOut( speed, [callback] ) 通过不透明度的变化来实现所有匹配元素的淡出效果，并在动画完成后可选地触发一个回调函数。 这个动画只调整元素的不透明度，也就是说所有匹配的元素的高度和宽度不会发生变化。</li>
+<li>fadeTo( speed, opacity, [callback] ) 把所有匹配元素的不透明度以渐进方式调整到指定的不透明度，并在动画完成后可选地触发一个回调函数。 这个动画只调整元素的不透明度，也就是说所有匹配的元素的高度和宽度不会发生变化。</li>
+<li>stop( ) 停止所有匹配元素当前正在运行的动画。如果有动画处于队列当中，他们就会立即开始。</li>
+<li>queue( ) 取得第一个匹配元素的动画序列的引用(返回一个内容为函数的数组)</li>
+<li>queue( callback ) 在每一个匹配元素的事件序列的末尾添加一个可执行函数，作为此元素的事件函数</li>
+<li>queue( queue ) 以一个新的动画序列代替所有匹配元素的原动画序列</li>
+<li>dequeue( ) 执行并移除动画序列前端的动画</li>
+<li>animate( params, [duration], [easing], [callback] ) 用于创建自定义动画的函数。</li>
+<li>animate( params, options ) 创建自定义动画的另一个方法。作用同上。</li>
+</ul>
+<h3 id="JQuery-Traversing-方法说明"><a href="#JQuery-Traversing-方法说明" class="headerlink" title="JQuery Traversing 方法说明"></a>JQuery Traversing 方法说明</h3><ul>
+<li>eq( index ) 从匹配的元素集合中取得一个指定位置的元素，index从0开始</li>
+<li>filter( expr ) 返回与指定表达式匹配的元素集合，可以使用”,”号分割多个expr，用于实现多个条件筛选</li>
+<li>filter( fn ) 利用一个特殊的函数来作为筛选条件移除集合中不匹配的元素。</li>
+<li>is( expr ) 用一个表达式来检查当前选择的元素集合，如果其中至少有一个元素符合这个给定的表达式就返回true。</li>
+<li>map( callback ) 将jQuery对象中的一组元素利用callback方法转换其值，然后添加到一个jQuery数组中。</li>
+<li>not( expr ) 从匹配的元素集合中删除与指定的表达式匹配的元素。</li>
+<li>slice( start, [end] ) 从匹配元素集合中取得一个子集，和内建的数组的slice方法相同。</li>
+<li>add( expr ) 把与表达式匹配的元素添加到jQuery对象中。</li>
+<li>children( [expr] ) 取得一个包含匹配的元素集合中每一个元素的所有子元素的元素集合。可选的过滤器将使这个方法只匹配符合的元素(只包括元素节点，不包括文本节点)。</li>
+<li>contents( ) 取得一个包含匹配的元素集合中每一个元素的所有子孙节点的集合(只包括元素节点，不包括文本节点)，如果元素为iframe，则取得其中的文档元素</li>
+<li>find( expr ) 搜索所有与指定表达式匹配的元素。</li>
+<li>next( [expr] ) 取得一个包含匹配的元素集合中每一个元素紧邻的后面同辈元素的元素集合。</li>
+<li>nextAll( [expr] ) 取得一个包含匹配的元素集合中每一个元素所有的后面同辈元素的元素集合</li>
+<li>parent( [expr] ) 取得一个包含着所有匹配元素的唯一父元素的元素集合。</li>
+<li>parents( [expr] ) 取得一个包含着所有匹配元素的唯一祖先元素的元素集合（不包含根元素）。</li>
+<li>prev( [expr] ) 取得一个包含匹配的元素集合中每一个元素紧邻的前一个同辈元素的元素集合。</li>
+<li>prevAll( [expr] ) 取得一个包含匹配的元素集合中每一个元素的之前所有同辈元素的元素集合。</li>
+<li>siblings( [expr] ) 取得一个包含匹配的元素集合中每一个元素的所有同辈元素的元素集合。</li>
+<li>andSelf( ) 将前一个匹配的元素集合添加到当前的集合中取得所有div元素和其中的p元素，添加border类属性。取得所有div元素中的p元素，添加background类属性</li>
+<li>end( ) 结束当前的操作，回到当前操作的前一个操作找到所有p元素其中的span元素集合，然后返回p元素集合，添加css属性</li>
+<li>$(”p”).find(”span”).end().css(”border”, “2px red solid”);</li>
+</ul>
+<h3 id="JQuery-Utilities-方法说明"><a href="#JQuery-Utilities-方法说明" class="headerlink" title="JQuery Utilities 方法说明"></a>JQuery Utilities 方法说明</h3><ul>
+<li>jQuery.browser</li>
+<li>jQuery.browser.version 读取用户浏览器的版本信息</li>
+<li>jQuery.boxModel 检测用户浏览器针对当前页的显示是否基于w3c CSS的盒模型</li>
+<li>jQuery.isFunction( obj ) 检测传递的参数是否为function</li>
+<li>jQuery.trim( str ) 清除字符串两端的空格，使用正则表达式来清除给定字符两端的空格</li>
+<li>jQuery.each( object, callback ) 一个通用的迭代器，可以用来无缝迭代对象和数组</li>
+<li>jQuery.extend( target, object1, [objectN] ) 扩展一个对象，修改原来的对象并返回，这是一个强大的实现继承的工具，这种继承是采用传值的方法来实现的，而不是JavaScript中的原型链方式。合并settings和options对象，返回修改后的settings对象</li>
+<li>jQuery.makeArray( obj ) 将一个类似数组的对象转化为一个真正的数组将选取的div元素集合转化为一个数组</li>
+<li>var arr = jQuery.makeArray(document.getElementsByTagName(”div”));</li>
+<li>arr.reverse(); // use an Array method on list of dom elements</li>
+<li>$(arr).appendTo(document.body);</li>
+<li>jQuery.map( array, callback ) 使用某个方法修改一个数组中的项，然后返回一个新的数组</li>
+<li>jQuery.inArray( value, array ) 返回value在数组中的位置，如果没有找到，则返回-1</li>
+<li>jQuery.unique( array ) 删除数组中的所有重复元素，返回整理后的数组</li>
+</ul>
+<h3 id="JQuery-Ajax-方法说明"><a href="#JQuery-Ajax-方法说明" class="headerlink" title="JQuery Ajax 方法说明:"></a>JQuery Ajax 方法说明:</h3><ul>
+<li><p>load( url, [data], [callback] ) 装入一个远程HTML内容到一个DOM结点。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$(”#feeds”).load(”feeds.html”); 将feeds.html文件载入到id为feeds的div中</div><div class="line">$(”#feeds”).load(”feeds.php”, &#123;limit: 25&#125;, function()&#123;</div><div class="line">alert(”The last 25 entries in the feed have been loaded”);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</li>
+<li><p>jQuery.get( url, [data], [callback] ) 使用GET请求一个页面。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$.get(”test.cgi”, &#123; name: “John”, time: “2pm” &#125;, function(data)&#123;</div><div class="line">alert(”Data Loaded: ” + data);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</li>
+<li><p>jQuery.getJSON( url, [data], [callback] ) 使用GET请求JSON数据。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$.getJSON(”test.js”, &#123; name: “John”, time: “2pm” &#125;, function(json)&#123;</div><div class="line">alert(”JSON Data: ” + json.users[3].name);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</li>
+<li><p>jQuery.getScript( url, [callback] ) 使用GET请求javascript文件并执行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$.getScript(”test.js”, function()&#123;</div><div class="line">alert(”Script loaded and executed.”);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</li>
+<li><p>jQuery.post( url, [data], [callback], [type] ) 使用POST请求一个页面。</p>
+</li>
+<li><p>ajaxComplete( callback ) 当一个AJAX请求结束后，执行一个函数。这是一个Ajax事件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$(”#msg”).ajaxComplete(function(request, settings)&#123;</div><div class="line">$(this).append(”&lt;li&gt;Request Complete.&lt;/li&gt;”);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</li>
+<li><p>ajaxError( callback ) 当一个AJAX请求失败后，执行一个函数。这是一个Ajax事件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$(”#msg”).ajaxError(function(request, settings)&#123;</div><div class="line">$(this).append(”&lt;li&gt;Error requesting page ” + settings.url + “&lt;/li&gt;”);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/10/20/JQ常用方法/">JQ常用方法</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">Naice</a></p>
+        <p><span>发布时间:</span>2016-10-20, 13:37:53</p>
+        <p><span>最后更新:</span>2017-04-27, 09:58:03</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/10/20/JQ常用方法/" title="JQ常用方法">http://naihe138.github.io/2016/10/20/JQ常用方法/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://naihe138.github.io/2016/10/20/JQ常用方法/　　作者: Naice" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2016/10/26/node-版本升级/">
+                    node 版本升级 操作
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/10/17/一些前端的笔记/">
+                    一些前端的笔记
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#JQuery-Selectors-方法说明"><span class="toc-number">1.</span> <span class="toc-text">JQuery Selectors 方法说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JQuery-CSS-方法说明"><span class="toc-number">2.</span> <span class="toc-text">JQuery CSS 方法说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jQuery-事件"><span class="toc-number">3.</span> <span class="toc-text">jQuery 事件:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#元素事件列表说明"><span class="toc-number">4.</span> <span class="toc-text">元素事件列表说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JQuery-Effects-方法说明"><span class="toc-number">5.</span> <span class="toc-text">JQuery Effects 方法说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JQuery-Traversing-方法说明"><span class="toc-number">6.</span> <span class="toc-text">JQuery Traversing 方法说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JQuery-Utilities-方法说明"><span class="toc-number">7.</span> <span class="toc-text">JQuery Utilities 方法说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JQuery-Ajax-方法说明"><span class="toc-number">8.</span> <span class="toc-text">JQuery Ajax 方法说明:</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"JQ常用方法　| naice　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <div id="comment-box" ></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2016/10/20/JQ常用方法/" data-title="JQ常用方法" data-url="http://naihe138.github.io/2016/10/20/JQ常用方法/"></div>
+    <script>
+        var duoshuoQuery = {short_name:"naihe138"};
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            // s.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+            s.src = 'https://naihe138.github.io/js/embed.js';
+            s.async = true; s.charset = 'UTF-8';
+            (d.head || d.body).appendChild(s);
+        }
+
+        
+    </script>
+    
+    <script> loadComment(); </script>
+
+</div>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/10/26/node-版本升级/" title="上一篇: node 版本升级 操作">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/10/17/一些前端的笔记/" title="下一篇: 一些前端的笔记">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/06/07/react、react-router、redux-也许是最佳小实践2/">react、react-router、redux 也许是最佳小实践2</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/06/react、react-router、redux-也许是最佳小实践/">react、react-router、redux 也许是最佳小实践1</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/26/vue2-0图片查看器/">vue2.0图片查看器</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/26/浅谈ajax原理过程以及实现/">浅谈ajax原理过程以及实现</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/16/基于react-bootstrap-koa2开发的“微说说”/">基于react+bootstrap+koa2开发的“微说说”</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/10/基于vue2.0Cli搭建的自定义，多模块打包框架/">基于vue2.0Cli搭建的自定义，多模块打包框架</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/08/javascriipt进制之间的转换二进制，8进制，10进制，16进制之间的转换/">javascriipt进制之间的转换二进制，8进制，10进制，16进制之间的转换</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/02/css用-media适配不同尺寸的手机布局方式/">css用@media适配不同尺寸的手机布局方式</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/08/js-地址的封装以及地址栏的参数获取/">js 地址的封装以及地址栏的参数获取</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/05/Linux命收集/">Linux命收集</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/29/vue自定义事件/">vue自定义事件</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/16/深入理解js执行的细节/">深入理解js执行的细节</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/15/JQ插件写（js大同小异）/">JQ插件写（其实js插件也一样）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/14/html5触摸时间tap演化/">html5触摸事件tap演化</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/09/显示隐藏mac文件操作/">显示隐藏mac文件操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/27/node跨域请求/">Node处理http跨域请求</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/27/关于JS堆栈与拷贝/">关于JS堆栈与拷贝</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/26/node-版本升级/">node 版本升级 操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/20/JQ常用方法/">JQ常用方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/17/一些前端的笔记/">一些前端的笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/16/hello-world/">发布hexo</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/15/强制退出Mac程序/">强制退出Mac程序</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/15/markdown教程/">markdown教程</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/13/gulp入门到上树/">gulp从入门到上树</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/12/夜深人静/">夜深，人静</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/10/在css中为table-后表格单元格边界异常的解决办法/">在css中为table 后表格单元格边界异常的解决办法</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/09/mongoose中通过-id查询的方法/">mongoose中通过-id查询的方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/02/mongodb启动不了：child process failed, exited with error number 100/">mongodb启动不了：child process failed, exited with error number 100</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/22/love/">试着学习markdown</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/17/mogodb启动方法(window)/">mongodb启动方法(window)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/20/js简单的事件监听器/">JS实现一个简单的事件监听器(订阅发布)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/20/获取时间戳的方法/">获取时间戳的方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/10/JS实现获取本周、本月、本季度、半年的时间/">JS实现获取本周、本月、本季度、半年的时间</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/10/01/移动端的一些常用css的设置 .(2)/">移动端的一些常用css的设置</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2017 Naice
+            </div>
+            <!--<div class="footer-right">-->
+                <!--<a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>-->
+                <!--Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a>-->
+                <!--by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>-->
+            <!--</div>-->
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

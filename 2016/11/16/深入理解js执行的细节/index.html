@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="Naice" />
+
+
+
+<meta name="description" content="javascript从定义到执行，JS引擎在实现层做了很多初始化工作，因此在学习JS引擎工作机制之前，我们需要引入几个相关的概念：执行环境栈、全局对象、执行环境、变量对象、活动对象、作用域和作用域链等，这些概念正是JS引擎工作的核心组件。这篇文章的目的不是孤立的为你讲解每一个概念，而是通过一个简单的demo来展开分析，全局讲解JS引擎从定义到执行的每一个细节，以及这些概念在其中所扮演的角色。">
+<meta name="keywords" content="js">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解js执行的细节">
+<meta property="og:url" content="http://naihe138.github.io/2016/11/16/深入理解js执行的细节/index.html">
+<meta property="og:site_name" content="naice">
+<meta property="og:description" content="javascript从定义到执行，JS引擎在实现层做了很多初始化工作，因此在学习JS引擎工作机制之前，我们需要引入几个相关的概念：执行环境栈、全局对象、执行环境、变量对象、活动对象、作用域和作用域链等，这些概念正是JS引擎工作的核心组件。这篇文章的目的不是孤立的为你讲解每一个概念，而是通过一个简单的demo来展开分析，全局讲解JS引擎从定义到执行的每一个细节，以及这些概念在其中所扮演的角色。">
+<meta property="og:updated_time" content="2016-12-04T04:48:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入理解js执行的细节">
+<meta name="twitter:description" content="javascript从定义到执行，JS引擎在实现层做了很多初始化工作，因此在学习JS引擎工作机制之前，我们需要引入几个相关的概念：执行环境栈、全局对象、执行环境、变量对象、活动对象、作用域和作用域链等，这些概念正是JS引擎工作的核心组件。这篇文章的目的不是孤立的为你讲解每一个概念，而是通过一个简单的demo来展开分析，全局讲解JS引擎从定义到执行的每一个细节，以及这些概念在其中所扮演的角色。">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="naice" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/img/favicon.jpg">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>深入理解js执行的细节 | naice</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: undefined
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar3.JPG" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">Naice</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">很多事情不是因为有希望才去坚持，而是坚持了才有希望。</p>
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/随笔/">随笔</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="http://naihe138.github.io/aboutMe/index.html">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=CTo_OTs4PDs6OUl4eCdqZmQ" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/naihe138" title="GitHub"></a>
+                            
+                                <a class="fa SegmentFault" href="https://segmentfault.com/u/naice" title="SegmentFault"></a>
+                            
+                                <a class="fa CSDN" href="http://blog.csdn.net/naihejiang" title="CSDN"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ajax/">ajax</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css3/">css3</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/">gulp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html5/">html5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jq/">jq</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/">js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/koa2/">koa2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac/">mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/moongose/">moongose</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react/">react</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redux/">redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue-cli/">vue-cli</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue2-0/">vue2.0</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/适配/">适配</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于前端</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">Naice</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar3.JPG" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">Naice</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">很多事情不是因为有希望才去坚持，而是坚持了才有希望。</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/随笔/">随笔</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="http://naihe138.github.io/aboutMe/index.html">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=CTo_OTs4PDs6OUl4eCdqZmQ" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/naihe138" title="GitHub"></a>
+                            
+                                <a class="fa SegmentFault" target="_blank" href="https://segmentfault.com/u/naice" title="SegmentFault"></a>
+                            
+                                <a class="fa CSDN" target="_blank" href="http://blog.csdn.net/naihejiang" title="CSDN"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-深入理解js执行的细节" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/11/16/深入理解js执行的细节/" class="article-date">
+      <time datetime="2016-11-16T02:07:51.000Z" itemprop="datePublished">2016-11-16</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      深入理解js执行的细节
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <blockquote>
+<p>javascript从定义到执行，JS引擎在实现层做了很多初始化工作，因此在学习JS引擎工作机制之前，我们需要引入几个相关的概念：执行环境栈、全局对象、执行环境、变量对象、活动对象、作用域和作用域链等，这些概念正是JS引擎工作的核心组件。这篇文章的目的不是孤立的为你讲解每一个概念，而是通过一个简单的demo来展开分析，全局讲解JS引擎从定义到执行的每一个细节，以及这些概念在其中所扮演的角色。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">var x = 1;  //定义一个全局变量 x</div><div class="line">function A(y)&#123;</div><div class="line">   var x = 2;  //定义一个局部变量 x</div><div class="line">   function B(z)&#123; //定义一个内部函数 B</div><div class="line">       console.log(x+y+z);</div><div class="line">   &#125;</div><div class="line">   return B; //返回函数B的引用</div><div class="line">&#125;</div><div class="line">var C = A(1); //执行A,返回B</div><div class="line">C(1); //执行函数B</div></pre></td></tr></table></figure>
+<p>这个demo是一个闭包，执行结果是4，下面我们将分全局初始化、执行函数A、执行函数B 三个阶段来分析JS引擎的工作机制:</p>
+<a id="more"></a>
+<h3 id="一、全局初始化"><a href="#一、全局初始化" class="headerlink" title="一、全局初始化"></a>一、全局初始化</h3><p>S引擎在进入一段可执行的代码时，需要完成以下三个初始化工作：</p>
+<p>首先，创建一个全局对象(Global Object) ， 这个对象全局只存在一份，它的属性在任何地方都可以访问，它的存在伴随着应用程序的整个生命周期。全局对象在创建时，将Math,String,Date,document 等常用的JS对象作为其属性。由于这个全局对象不能通过名字直接访问，因此还有另外一个属性window,并将window指向了自身，这样就可以通过window访问这个全局对象了。用伪代码模拟全局对象的大体结构如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">//创建一个全局对象</div><div class="line">var globalObject = &#123; </div><div class="line">    Math:&#123;&#125;,</div><div class="line">    String:&#123;&#125;,</div><div class="line">    Date:&#123;&#125;,</div><div class="line">    document:&#123;&#125;, //DOM操作</div><div class="line">    ...</div><div class="line">    window:this //让window属性指向了自身</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后，JS引擎需要构建一个执行环境栈( Execution Context Stack) ，与此同时，也要创建一个全局执行环境（Execution Context）EC ，并将这个全局执行环境EC压入执行环境栈中。执行环境栈的作用是为了保证程序能够按照正确的顺序被执行。在javascript中，每个函数都有自己的执行环境，当执行一个函数时，该函数的执行环境就会被推入执行环境栈的顶部并获取执行权。当这个函数执行完毕，它的执行环境又从这个栈的顶部被删除，并把执行权并还给之前执行环境。我们用伪代码来模拟执行环境栈和EC的关系：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var ECStack = []; //定义一个执行环境栈，类似于数组</div><div class="line"></div><div class="line">var EC = &#123;&#125;;   //创建一个执行空间，</div><div class="line">//ECMA-262规范并没有对EC的数据结构做明确的定义，你可以理解为在内存中分配的一块空间</div><div class="line"></div><div class="line">ECStack.push(EC); //进入函数，压入执行环境</div><div class="line">ECStack.pop(EC);  //函数返回后，删除执行环境</div></pre></td></tr></table></figure>
+<p>最后，JS引擎还要创建一个与EC关联的全局变量对象(Varibale Object) VO,  并把VO指向全局对象，VO中不仅包含了全局对象的原有属性，还包括在全局定义的变量x 和函数 A，与此同时，在定义函数A的时候，还为 A 添加了一个内部属性scope，并将scope指向了VO。每个函数在定义的时候，都会创建一个与之关联的scope属性，scope总是指向定义函数时所在的环境。此时的ECStack结构如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">ECStack = [   //执行环境栈</div><div class="line">    EC(G) = &#123;   //全局执行环境</div><div class="line">        VO(G):&#123; //定义全局变量对象</div><div class="line">            ... //包含全局对象原有的属性</div><div class="line">            x = 1; //定义变量x</div><div class="line">            A = function()&#123;...&#125;; //定义函数A</div><div class="line">            A[[scope]] = this; //定义A的scope，并赋值为VO本身</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">];</div></pre></td></tr></table></figure>
+<h3 id="二、-执行函数A"><a href="#二、-执行函数A" class="headerlink" title="二、 执行函数A"></a>二、 执行函数A</h3><p>当执行进入A(1) 时，JS引擎需要完成以下工作：</p>
+<p>首先，JS引擎会创建函数A的执行环境EC，然后EC推入执行环境栈的顶部并获取执行权。此时执行环境栈中有两个执行环境，分别是全局执行环境和函数A执行环境，A的执行环境在栈顶，全局执行环境在栈的底部。然后，创建函数A的作用域链(Scope Chain) ，在javascript中，每个执行环境都有自己的作用域链，用于标识符解析，当执行环境被创建时，它的作用域链就初始化为当前运行函数的scope所包含的对象。  </p>
+<p>接着，JS引擎会创建一个当前函数的活动对象(Activation Object) AO，这里的活动对象扮演着变量对象的角色，只是在函数中的叫法不同而已（你可以认为变量对象是一个总的概念，而活动对象是它的一个分支）， AO中包含了函数的形参、arguments对象、this对象、以及局部变量和内部函数的定义，然后AO会被推入作用域链的顶端。需要注意的是，在定义函数B的时候，JS引擎同样也会为B添加了一个scope属性,并将scope指向了定义函数B时所在的环境，定义函数B的环境就是A的活动对象AO， 而AO位于链表的前端，由于链表具有首尾相连的特点，因此函数B的scope指向了A的整个作用域链。 我们再看看此时的ECStack结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">ECStack = [   //执行环境栈</div><div class="line">    EC(A) = &#123;   //A的执行环境</div><div class="line">        [scope]:VO(G), //VO是全局变量对象</div><div class="line">        AO(A) : &#123; //创建函数A的活动对象</div><div class="line">            y:1,</div><div class="line">            x:2,  //定义局部变量x</div><div class="line">            B:function()&#123;...&#125;, //定义函数B</div><div class="line">            B[[scope]] = this; //this指代AO本身，而AO位于scopeChain的顶端，因此B[[scope]]指向整个作用域链</div><div class="line">            arguments:[],//平时我们在函数中访问的arguments就是AO中的arguments</div><div class="line">            this:window  //函数中的this指向调用者window对象</div><div class="line">        &#125;,</div><div class="line">        scopeChain:&lt;AO(A),A[[scope]]&gt;  //链表初始化为A[[scope]],然后再把AO加入该作用域链的顶端,此时A的作用域链：AO(A)-&gt;VO(G)</div><div class="line">    &#125;,</div><div class="line">    EC(G) = &#123;   //全局执行环境</div><div class="line">        VO(G):&#123; //创建全局变量对象</div><div class="line">            ... //包含全局对象原有的属性</div><div class="line">            x = 1; //定义变量x</div><div class="line">            A = function()&#123;...&#125;; //定义函数A</div><div class="line">            A[[scope]] = this; //定义A的scope，A[[scope]] == VO(G)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">];</div></pre></td></tr></table></figure>
+<h3 id="三、-执行函数B"><a href="#三、-执行函数B" class="headerlink" title="三、 执行函数B"></a>三、 执行函数B</h3><p>函数A被执行以后，返回了B的引用，并赋值给了变量C，执行 C(1) 就相当于执行B(1)，JS引擎需要完成以下工作：</p>
+<p>首先，还和上面一样，创建函数B的执行环境EC，然后EC推入执行环境栈的顶部并获取执行权。 此时执行环境栈中有两个执行环境，分别是全局执行环境和函数B的执行环境，B的执行环境在栈顶，全局执行环境在栈的底部。（注意：当函数A返回后，A的执行环境就会从栈中被删除，只留下全局执行环境）然后，创建函数B的作用域链，并初始化为函数B的scope所包含的对象，即包含了A的作用域链。最后，创建函数B的活动对象AO,并将B的形参z, arguments对象 和 this对象作为AO的属性。此时ECStack将会变成这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">ECStack = [   //执行环境栈</div><div class="line">    EC(B) = &#123;   //创建B的执行环境,并处于作用域链的顶端</div><div class="line">        [scope]:AO(A), //指向函数A的作用域链,AO(A)-&gt;VO(G)</div><div class="line">        var AO(B) = &#123; //创建函数B的活动对象</div><div class="line">            z:1,</div><div class="line">            arguments:[],</div><div class="line">            this:window</div><div class="line">        &#125;</div><div class="line">        scopeChain:&lt;AO(B),B[[scope]]&gt;  //链表初始化为B[[scope]],再将AO(B)加入链表表头，此时B的作用域链：AO(B)-&gt;AO(A)-VO(G)</div><div class="line">    &#125;,</div><div class="line">    EC(A), //A的执行环境已经从栈顶被删除,</div><div class="line">    EC(G) = &#123;   //全局执行环境</div><div class="line">        VO:&#123; //定义全局变量对象</div><div class="line">            ... //包含全局对象原有的属性</div><div class="line">            x = 1; //定义变量x</div><div class="line">            A = function()&#123;...&#125;; //定义函数A</div><div class="line">            A[[scope]] = this; //定义A的scope，A[[scope]] == VO(G)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">];</div></pre></td></tr></table></figure>
+<p>当函数B执行“x+y+z”时，需要对x、y、z 三个标识符进行一一解析，解析过程遵守变量查找规则：先查找自己的活动对象中是否存在该属性，如果存在，则停止查找并返回；如果不存在，继续沿着其作用域链从顶端依次查找，直到找到为止，如果整个作用域链上都未找到该变量，则返回“undefined”。从上面的分析可以看出函数B的作用域链是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">AO(B)-&gt;AO(A)-&gt;VO(G)</div></pre></td></tr></table></figure>
+<p>因此，变量x会在AO(A)中被找到，而不会查找VO(G)中的x，变量y也会在AO(A)中被找到，变量z 在自身的AO(B)中就找到了。所以执行结果：2+1+1=4.</p>
+<h3 id="简单的总结语"><a href="#简单的总结语" class="headerlink" title="简单的总结语"></a>简单的总结语</h3><p>了解了JS引擎的工作机制之后，我们不能只停留在理解概念的层面，而要将其作为基础工具，用以优化和改善我们在实际工作中的代码，提高执行效率，产生实际价值才是我们的真正目的。就拿变量查找机制来说，如果你的代码嵌套很深，每引用一次全局变量，JS引擎就要查找整个作用域链，比如处于作用域链的最底端window和document对象就存在这个问题，因此我们围绕这个问题可以做很多性能优化的工作，当然还有其他方面的优化，此处不再赘述，本文仅当作抛砖引玉吧！</p>
+<p>by @一像素 2015</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/11/16/深入理解js执行的细节/">深入理解js执行的细节</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">Naice</a></p>
+        <p><span>发布时间:</span>2016-11-16, 10:07:51</p>
+        <p><span>最后更新:</span>2016-12-04, 12:48:25</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/11/16/深入理解js执行的细节/" title="深入理解js执行的细节">http://naihe138.github.io/2016/11/16/深入理解js执行的细节/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://naihe138.github.io/2016/11/16/深入理解js执行的细节/　　作者: Naice" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2016/11/29/vue自定义事件/">
+                    vue自定义事件
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/11/15/JQ插件写（js大同小异）/">
+                    JQ插件写（其实js插件也一样）
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、全局初始化"><span class="toc-number">1.</span> <span class="toc-text">一、全局初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、-执行函数A"><span class="toc-number">2.</span> <span class="toc-text">二、 执行函数A</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、-执行函数B"><span class="toc-number">3.</span> <span class="toc-text">三、 执行函数B</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#简单的总结语"><span class="toc-number">4.</span> <span class="toc-text">简单的总结语</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"深入理解js执行的细节　| naice　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <div id="comment-box" ></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2016/11/16/深入理解js执行的细节/" data-title="深入理解js执行的细节" data-url="http://naihe138.github.io/2016/11/16/深入理解js执行的细节/"></div>
+    <script>
+        var duoshuoQuery = {short_name:"naihe138"};
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            // s.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+            s.src = 'https://naihe138.github.io/js/embed.js';
+            s.async = true; s.charset = 'UTF-8';
+            (d.head || d.body).appendChild(s);
+        }
+
+        
+    </script>
+    
+    <script> loadComment(); </script>
+
+</div>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/11/29/vue自定义事件/" title="上一篇: vue自定义事件">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/11/15/JQ插件写（js大同小异）/" title="下一篇: JQ插件写（其实js插件也一样）">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/06/07/react、react-router、redux-也许是最佳小实践2/">react、react-router、redux 也许是最佳小实践2</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/06/react、react-router、redux-也许是最佳小实践/">react、react-router、redux 也许是最佳小实践1</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/26/vue2-0图片查看器/">vue2.0图片查看器</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/26/浅谈ajax原理过程以及实现/">浅谈ajax原理过程以及实现</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/16/基于react-bootstrap-koa2开发的“微说说”/">基于react+bootstrap+koa2开发的“微说说”</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/10/基于vue2.0Cli搭建的自定义，多模块打包框架/">基于vue2.0Cli搭建的自定义，多模块打包框架</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/08/javascriipt进制之间的转换二进制，8进制，10进制，16进制之间的转换/">javascriipt进制之间的转换二进制，8进制，10进制，16进制之间的转换</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/02/css用-media适配不同尺寸的手机布局方式/">css用@media适配不同尺寸的手机布局方式</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/08/js-地址的封装以及地址栏的参数获取/">js 地址的封装以及地址栏的参数获取</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/05/Linux命收集/">Linux命收集</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/29/vue自定义事件/">vue自定义事件</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/16/深入理解js执行的细节/">深入理解js执行的细节</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/15/JQ插件写（js大同小异）/">JQ插件写（其实js插件也一样）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/14/html5触摸时间tap演化/">html5触摸事件tap演化</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/09/显示隐藏mac文件操作/">显示隐藏mac文件操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/27/node跨域请求/">Node处理http跨域请求</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/27/关于JS堆栈与拷贝/">关于JS堆栈与拷贝</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/26/node-版本升级/">node 版本升级 操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/20/JQ常用方法/">JQ常用方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/17/一些前端的笔记/">一些前端的笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/16/hello-world/">发布hexo</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/15/强制退出Mac程序/">强制退出Mac程序</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/15/markdown教程/">markdown教程</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/13/gulp入门到上树/">gulp从入门到上树</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/12/夜深人静/">夜深，人静</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/10/在css中为table-后表格单元格边界异常的解决办法/">在css中为table 后表格单元格边界异常的解决办法</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/09/mongoose中通过-id查询的方法/">mongoose中通过-id查询的方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/02/mongodb启动不了：child process failed, exited with error number 100/">mongodb启动不了：child process failed, exited with error number 100</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/22/love/">试着学习markdown</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/17/mogodb启动方法(window)/">mongodb启动方法(window)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/20/js简单的事件监听器/">JS实现一个简单的事件监听器(订阅发布)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/20/获取时间戳的方法/">获取时间戳的方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/10/JS实现获取本周、本月、本季度、半年的时间/">JS实现获取本周、本月、本季度、半年的时间</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/10/01/移动端的一些常用css的设置 .(2)/">移动端的一些常用css的设置</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2017 Naice
+            </div>
+            <!--<div class="footer-right">-->
+                <!--<a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>-->
+                <!--Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a>-->
+                <!--by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>-->
+            <!--</div>-->
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

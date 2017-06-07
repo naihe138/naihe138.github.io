@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="Naice" />
+
+
+
+<meta name="description" content="1.什么是AJAX?AJAX全称为“Asynchronous JavaScript and XML”（异步JavaScript和XML），是一种创建交互式网页应用的网页开发技术。它使用：  使用XHTML+CSS来标准化呈现； 使用XML和XSLT进行数据交换及相关操作； 使用XMLHttpRequest对象与Web服务器进行异步数据通信； 使用Javascript操作Document Objec">
+<meta name="keywords" content="js,javascript,ajax">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅谈ajax原理过程以及实现">
+<meta property="og:url" content="http://naihe138.github.io/2017/04/26/浅谈ajax原理过程以及实现/index.html">
+<meta property="og:site_name" content="naice">
+<meta property="og:description" content="1.什么是AJAX?AJAX全称为“Asynchronous JavaScript and XML”（异步JavaScript和XML），是一种创建交互式网页应用的网页开发技术。它使用：  使用XHTML+CSS来标准化呈现； 使用XML和XSLT进行数据交换及相关操作； 使用XMLHttpRequest对象与Web服务器进行异步数据通信； 使用Javascript操作Document Objec">
+<meta property="og:updated_time" content="2017-04-26T01:53:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="浅谈ajax原理过程以及实现">
+<meta name="twitter:description" content="1.什么是AJAX?AJAX全称为“Asynchronous JavaScript and XML”（异步JavaScript和XML），是一种创建交互式网页应用的网页开发技术。它使用：  使用XHTML+CSS来标准化呈现； 使用XML和XSLT进行数据交换及相关操作； 使用XMLHttpRequest对象与Web服务器进行异步数据通信； 使用Javascript操作Document Objec">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="naice" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/img/favicon.jpg">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>浅谈ajax原理过程以及实现 | naice</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: undefined
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar3.JPG" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">Naice</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">很多事情不是因为有希望才去坚持，而是坚持了才有希望。</p>
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/随笔/">随笔</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="http://naihe138.github.io/aboutMe/index.html">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=CTo_OTs4PDs6OUl4eCdqZmQ" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/naihe138" title="GitHub"></a>
+                            
+                                <a class="fa SegmentFault" href="https://segmentfault.com/u/naice" title="SegmentFault"></a>
+                            
+                                <a class="fa CSDN" href="http://blog.csdn.net/naihejiang" title="CSDN"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ajax/">ajax</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css3/">css3</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/">gulp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html5/">html5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jq/">jq</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/">js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/koa2/">koa2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac/">mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/moongose/">moongose</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react/">react</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redux/">redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue-cli/">vue-cli</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue2-0/">vue2.0</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/适配/">适配</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于前端</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">Naice</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar3.JPG" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">Naice</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">很多事情不是因为有希望才去坚持，而是坚持了才有希望。</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/随笔/">随笔</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="http://naihe138.github.io/aboutMe/index.html">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=CTo_OTs4PDs6OUl4eCdqZmQ" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/naihe138" title="GitHub"></a>
+                            
+                                <a class="fa SegmentFault" target="_blank" href="https://segmentfault.com/u/naice" title="SegmentFault"></a>
+                            
+                                <a class="fa CSDN" target="_blank" href="http://blog.csdn.net/naihejiang" title="CSDN"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-浅谈ajax原理过程以及实现" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/04/26/浅谈ajax原理过程以及实现/" class="article-date">
+      <time datetime="2017-04-26T01:28:44.000Z" itemprop="datePublished">2017-04-26</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      浅谈ajax原理过程以及实现
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ajax/">ajax</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h3 id="1-什么是AJAX"><a href="#1-什么是AJAX" class="headerlink" title="1.什么是AJAX?"></a>1.什么是AJAX?</h3><p>AJAX全称为“Asynchronous JavaScript and XML”（异步JavaScript和XML），是一种创建交互式网页应用的网页开发技术。它使用：</p>
+<ol>
+<li>使用XHTML+CSS来标准化呈现；</li>
+<li>使用XML和XSLT进行数据交换及相关操作；</li>
+<li>使用XMLHttpRequest对象与Web服务器进行异步数据通信；</li>
+<li>使用Javascript操作Document Object Model进行动态显示及交互；</li>
+<li><p>使用JavaScript绑定和处理所有数据。</p>
+<h3 id="2-AJAX的工作原理"><a href="#2-AJAX的工作原理" class="headerlink" title="2.AJAX的工作原理"></a>2.AJAX的工作原理</h3><p>Ajax的工作原理相当于在用户和服务器之间加了—个中间层(AJAX引擎),使用户操作与服务器响应异步化。并不是所有的用户请求都提交给服务器,像—些数据验证和数据处理等都交给Ajax引擎自己来做, 只有确定需要从服务器读取新数据时再由Ajax引擎代为向服务器提交请求。<br>Ajax：Asynchronous javascript and xml，实现了客户端与服务器进行数据交流过程。使用技术的好处是：不用页面刷新，并且在等待页面传输数据的同时可以进行其他操作。</p>
+<a id="more"></a>
+<h3 id="3-XMLHttpRequest对象的属性和方法。"><a href="#3-XMLHttpRequest对象的属性和方法。" class="headerlink" title="3.XMLHttpRequest对象的属性和方法。"></a>3.XMLHttpRequest对象的属性和方法。</h3></li>
+<li><p>主要的属性：<br>readyState属性有五个状态值。<br>0：是uninitialized，未初始化。已经创建了XMLHttpRequest对象但是未初始化。<br>1：是loading，send for request but not called .已经开始准备好要发送了。<br>2：是loaded, send called,headers and status are available。已经发送，但是还没有收到响应。<br>3：是interactive，downloading response,but responseText only partial set.正在接受响应，但是还不完整。<br>4：是completed，finish downloading.接受响应完毕。<br>responseText：服务器返回的响应文本。只有当readyState&gt;=3的时候才有值，根据readyState的状态值，可以知道，当readyState=3，返回的响应文本不完整，只有readyState=4，完全返回，才能接受全部的响应文本。<br>responseXML：response  as Dom Document object。响应信息是xml，可以解析为Dom对象。<br>status：服务器的Http状态码，若是200，则表示OK，404，表示为未找到。<br>statusText：服务器http状态码的文本。比如OK，Not Found。</p>
+</li>
+<li><p>主要的方法：<br>open（method，url，boolean）：打开XMLHttpRequest对象。其中method方法有get，post，delete，put。若是查数据，从服务器中得到一定的数据，则使用get。若是直接提交到服务器中，更新一定的数据，则使用post；url是请求资源的地址。第三个参数表示是否使用异步。默认情况是true，因为Ajax的特点就是异步传送。若使用同步则false。异步和同步上述已经举例。<br>send（body）：发送请求Ajax引擎，让Ajax引擎操作。其中发送的内容可以是需要的参数，若是没有参数，直接send（null)</p>
+</li>
+</ol>
+<h3 id="4-使用Ajax"><a href="#4-使用Ajax" class="headerlink" title="4.使用Ajax"></a>4.使用Ajax</h3><p>首先，有客户端事件触发Ajax事件。<br>然后，创建xmlHttpRequest对象，根据浏览器不同，创建的xmlHttpRequest对象不同。用open调用，用send发送请求给Ajax引擎。<br>最后，执行完毕后，把结果返回给客户端。</p>
+<p>测试代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div></pre></td><td class="code"><pre><div class="line">// 创建 ajax</div><div class="line">function ajaxFunction()&#123;  </div><div class="line">   var xmlHttp;  </div><div class="line">   try&#123; </div><div class="line">      // Firefox, Opera 8.0+, Safari  </div><div class="line">      xmlHttp=new XMLHttpRequest();  </div><div class="line">   &#125;  </div><div class="line">   catch (e)&#123;  </div><div class="line">      try &#123;</div><div class="line">        // Internet Explorer  </div><div class="line">        xmlHttp=new ActiveXObject(&quot;Msxml2.XMLHTTP&quot;);  </div><div class="line">      &#125;  </div><div class="line">      catch (e)&#123;  </div><div class="line">        try&#123;  </div><div class="line">          xmlHttp=new ActiveXObject(&quot;Microsoft.XMLHTTP&quot;);  </div><div class="line">        &#125;  </div><div class="line">        catch (e)&#123;&#125;  </div><div class="line">      &#125;  </div><div class="line">   &#125;  </div><div class="line">   return xmlHttp;  </div><div class="line">&#125;  </div><div class="line"></div><div class="line"></div><div class="line">//1 创建XMLHttpRequest对象  </div><div class="line">var xhr = ajaxFunction();  </div><div class="line">          </div><div class="line">/* </div><div class="line"> 2 客户端与服务器端，建立连接 </div><div class="line"> open(method, url, asynch) </div><div class="line"> method:请求类型，类似 “GET”或”POST”的字符串 </div><div class="line"> url:请求路径 </div><div class="line"> asynch:表示请求是否要异步传输，默认值为true(异步)。 </div><div class="line">*/   </div><div class="line">xhr.open(&quot;get&quot;,&quot;../testServlet?timeStamp=&quot;+new Date().getTime()+&quot;&amp;c=9&quot;,true);  </div><div class="line">       </div><div class="line">/* </div><div class="line"> 3 客户端向服务器端发送请求 </div><div class="line"> send()方法 </div><div class="line"> 如果请求类型是GET方式的话，send()方法发送的请求数据，服务器端接收不到.这个步骤是不能省略的！ </div><div class="line">*/   </div><div class="line">xhr.send(&quot;a=7&amp;b=8&quot;);        //send(null);  </div><div class="line">    </div><div class="line">/*  </div><div class="line">4 服务器端响应数据 </div><div class="line">readyState 属性表示Ajax请求的当前状态。它的值用数字代表。 </div><div class="line">0 代表未初始化。 还没有调用 open 方法 </div><div class="line">1 代表正在加载。 open 方法已被调用，但 send 方法还没有被调用 </div><div class="line">2 代表已加载完毕。send 已被调用。请求已经开始 </div><div class="line">3 代表交互中。服务器正在发送响应 </div><div class="line">4 代表完成。响应发送完毕 </div><div class="line">常用状态码及其含义： </div><div class="line">404 没找到页面(not found) </div><div class="line">403 禁止访问(forbidden) </div><div class="line">500 内部服务器出错(internal service error) </div><div class="line">200 一切正常(ok) </div><div class="line">304 没有被修改(not modified)(服务器返回304状态，表示源文件没有被修改 ) </div><div class="line">*/  </div><div class="line">xhr.onreadystatechange = function()&#123;  </div><div class="line">// alert(xhr.readyState);  </div><div class="line">// alert(xhr.status);  </div><div class="line">  if(xhr.readyState==4)&#123;  </div><div class="line">      if(xhr.status==200||xhr.status==304)&#123;  </div><div class="line">          var data = xhr.responseText;  </div><div class="line">          alert(data);  </div><div class="line">      &#125;  </div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>完结 散花~~~~</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/04/26/浅谈ajax原理过程以及实现/">浅谈ajax原理过程以及实现</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">Naice</a></p>
+        <p><span>发布时间:</span>2017-04-26, 09:28:44</p>
+        <p><span>最后更新:</span>2017-04-26, 09:53:23</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/04/26/浅谈ajax原理过程以及实现/" title="浅谈ajax原理过程以及实现">http://naihe138.github.io/2017/04/26/浅谈ajax原理过程以及实现/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://naihe138.github.io/2017/04/26/浅谈ajax原理过程以及实现/　　作者: Naice" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2017/04/26/vue2-0图片查看器/">
+                    vue2.0图片查看器
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/03/16/基于react-bootstrap-koa2开发的“微说说”/">
+                    基于react+bootstrap+koa2开发的“微说说”
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-什么是AJAX"><span class="toc-number">1.</span> <span class="toc-text">1.什么是AJAX?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-AJAX的工作原理"><span class="toc-number">2.</span> <span class="toc-text">2.AJAX的工作原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-XMLHttpRequest对象的属性和方法。"><span class="toc-number">3.</span> <span class="toc-text">3.XMLHttpRequest对象的属性和方法。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-使用Ajax"><span class="toc-number">4.</span> <span class="toc-text">4.使用Ajax</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"浅谈ajax原理过程以及实现　| naice　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <div id="comment-box" ></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2017/04/26/浅谈ajax原理过程以及实现/" data-title="浅谈ajax原理过程以及实现" data-url="http://naihe138.github.io/2017/04/26/浅谈ajax原理过程以及实现/"></div>
+    <script>
+        var duoshuoQuery = {short_name:"naihe138"};
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            // s.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+            s.src = 'https://naihe138.github.io/js/embed.js';
+            s.async = true; s.charset = 'UTF-8';
+            (d.head || d.body).appendChild(s);
+        }
+
+        
+    </script>
+    
+    <script> loadComment(); </script>
+
+</div>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/04/26/vue2-0图片查看器/" title="上一篇: vue2.0图片查看器">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/03/16/基于react-bootstrap-koa2开发的“微说说”/" title="下一篇: 基于react+bootstrap+koa2开发的“微说说”">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/06/07/react、react-router、redux-也许是最佳小实践2/">react、react-router、redux 也许是最佳小实践2</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/06/react、react-router、redux-也许是最佳小实践/">react、react-router、redux 也许是最佳小实践1</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/26/vue2-0图片查看器/">vue2.0图片查看器</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/26/浅谈ajax原理过程以及实现/">浅谈ajax原理过程以及实现</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/16/基于react-bootstrap-koa2开发的“微说说”/">基于react+bootstrap+koa2开发的“微说说”</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/10/基于vue2.0Cli搭建的自定义，多模块打包框架/">基于vue2.0Cli搭建的自定义，多模块打包框架</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/08/javascriipt进制之间的转换二进制，8进制，10进制，16进制之间的转换/">javascriipt进制之间的转换二进制，8进制，10进制，16进制之间的转换</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/02/css用-media适配不同尺寸的手机布局方式/">css用@media适配不同尺寸的手机布局方式</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/08/js-地址的封装以及地址栏的参数获取/">js 地址的封装以及地址栏的参数获取</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/05/Linux命收集/">Linux命收集</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/29/vue自定义事件/">vue自定义事件</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/16/深入理解js执行的细节/">深入理解js执行的细节</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/15/JQ插件写（js大同小异）/">JQ插件写（其实js插件也一样）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/14/html5触摸时间tap演化/">html5触摸事件tap演化</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/09/显示隐藏mac文件操作/">显示隐藏mac文件操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/27/node跨域请求/">Node处理http跨域请求</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/27/关于JS堆栈与拷贝/">关于JS堆栈与拷贝</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/26/node-版本升级/">node 版本升级 操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/20/JQ常用方法/">JQ常用方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/17/一些前端的笔记/">一些前端的笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/16/hello-world/">发布hexo</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/15/强制退出Mac程序/">强制退出Mac程序</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/15/markdown教程/">markdown教程</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/13/gulp入门到上树/">gulp从入门到上树</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/12/夜深人静/">夜深，人静</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/10/在css中为table-后表格单元格边界异常的解决办法/">在css中为table 后表格单元格边界异常的解决办法</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/09/mongoose中通过-id查询的方法/">mongoose中通过-id查询的方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/02/mongodb启动不了：child process failed, exited with error number 100/">mongodb启动不了：child process failed, exited with error number 100</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/22/love/">试着学习markdown</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/17/mogodb启动方法(window)/">mongodb启动方法(window)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/20/js简单的事件监听器/">JS实现一个简单的事件监听器(订阅发布)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/20/获取时间戳的方法/">获取时间戳的方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/10/JS实现获取本周、本月、本季度、半年的时间/">JS实现获取本周、本月、本季度、半年的时间</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/10/01/移动端的一些常用css的设置 .(2)/">移动端的一些常用css的设置</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2017 Naice
+            </div>
+            <!--<div class="footer-right">-->
+                <!--<a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>-->
+                <!--Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a>-->
+                <!--by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>-->
+            <!--</div>-->
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
